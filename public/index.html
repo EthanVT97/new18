@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/18klogo.jpg" />
+    <link rel="icon" type="image/jpeg" href="%PUBLIC_URL%/18klogo.jpg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#001F1F" />
     <meta
@@ -39,6 +39,7 @@
         height: auto;
         margin-bottom: 2rem;
         filter: drop-shadow(0 0 10px rgba(0, 255, 102, 0.3));
+        animation: glow 2s ease-in-out infinite alternate;
       }
       .loading::after {
         content: '';
@@ -52,6 +53,14 @@
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+      }
+      @keyframes glow {
+        from {
+          filter: drop-shadow(0 0 10px rgba(0, 255, 102, 0.3));
+        }
+        to {
+          filter: drop-shadow(0 0 20px rgba(0, 255, 102, 0.6));
+        }
       }
     </style>
     <title>18K Chat App</title>

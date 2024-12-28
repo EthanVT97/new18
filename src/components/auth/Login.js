@@ -107,7 +107,7 @@ const Login = () => {
               mb: 3
             }}
           >
-            <Logo src="/18klogo.jpg" alt="18K Logo" />
+            <Logo src={process.env.PUBLIC_URL + '/18klogo.jpg'} alt="18K Logo" />
             <Typography
               component="h1"
               variant="h4"
