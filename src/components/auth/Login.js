@@ -41,6 +41,13 @@ const StyledSelect = styled(Select)(({ theme }) => ({
   },
 }));
 
+const Logo = styled('img')({
+  width: '150px',
+  height: 'auto',
+  marginBottom: '2rem',
+  filter: 'drop-shadow(0 0 10px rgba(0, 255, 102, 0.3))',
+});
+
 const Login = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
@@ -92,20 +99,29 @@ const Login = () => {
     >
       <Container component="main" maxWidth="xs">
         <GlowingPaper elevation={24}>
-          <Typography
-            component="h1"
-            variant="h4"
-            align="center"
+          <Box
             sx={{
-              mb: 4,
-              fontWeight: 700,
-              background: 'linear-gradient(45deg, #00FF66, #33FF99)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              mb: 3
             }}
           >
-            {t('login')}
-          </Typography>
+            <Logo src="/18klogo.jpg" alt="18K Logo" />
+            <Typography
+              component="h1"
+              variant="h4"
+              align="center"
+              sx={{
+                fontWeight: 700,
+                background: 'linear-gradient(45deg, #00FF66, #33FF99)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              {t('login')}
+            </Typography>
+          </Box>
           <FormControl fullWidth sx={{ mb: 3 }}>
             <InputLabel sx={{ color: 'primary.light' }}>{t('language')}</InputLabel>
             <StyledSelect
