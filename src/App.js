@@ -8,7 +8,8 @@ import './i18n/config';
 // Components
 import Login from './components/auth/Login';
 import AdminDashboard from './components/admin/Dashboard';
-import ChatRoom from './components/chat/ChatRoom';
+import ChatInterface from './components/chat/ChatInterface';
+import ChatTemplates from './components/admin/ChatTemplates';
 import PrivateRoute from './components/auth/PrivateRoute';
 import Dashboard from './components/dashboard/Dashboard';
 
@@ -44,9 +45,14 @@ function App() {
                 <AdminDashboard />
               </PrivateRoute>
             } />
-            <Route path="/chat/:roomId" element={
+            <Route path="/chat" element={
               <PrivateRoute>
-                <ChatRoom />
+                <ChatInterface />
+              </PrivateRoute>
+            } />
+            <Route path="/admin/templates" element={
+              <PrivateRoute>
+                <ChatTemplates />
               </PrivateRoute>
             } />
             <Route path="/" element={<Navigate to="/login" replace />} />

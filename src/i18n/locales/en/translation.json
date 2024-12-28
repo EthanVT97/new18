@@ -11,6 +11,26 @@
   "startChat": "Start Chat",
   "viewUsers": "View Users",
   "settings": "Settings",
+  "chat": {
+    "title": "Chat Room",
+    "templates": "Quick Templates",
+    "typemessage": "Type a message...",
+    "copy": "Copy Message"
+  },
+  "templates": {
+    "title": "Chat Templates",
+    "add": "Add Template",
+    "edit": "Edit Template",
+    "create": "Create Template",
+    "titleLabel": "Template Title",
+    "contentLabel": "Template Content"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "copy": "Copy"
+  },
   "error": {
     "invalid_credentials": "Invalid email or password",
     "network_error": "Network error. Please try again",
