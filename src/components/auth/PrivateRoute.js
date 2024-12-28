@@ -1,44 +1,50 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { supabase } from '../../config/supabase';
-import { CircularProgress, Box } from '@mui/material';
+import { Box, CircularProgress } from '@mui/material';
 
 const PrivateRoute = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState(null);
+  const [authenticated, setAuthenticated] = useState(false);
 
   useEffect(() => {
-    const checkUser = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
-      setUser(user);
-      setLoading(false);
-    };
-
-    checkUser();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => {
-      authListener?.subscription?.unsubscribe();
-    };
+    checkAuth();
   }, []);
+
+  const checkAuth = async () => {
+    try {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        throw error;
+      }
+
+      setAuthenticated(!!session);
+    } catch (error) {
+      console.error('Auth error:', error.message);
+      setAuthenticated(false);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <CircularProgress />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: '100vh',
+          background: 'linear-gradient(135deg, #001F1F 0%, #003333 100%)',
+        }}
+      >
+        <CircularProgress sx={{ color: '#00FF66' }} />
       </Box>
     );
   }
 
-  if (!user) {
-    return <Navigate to="/login" />;
-  }
-
-  return children;
+  return authenticated ? children : <Navigate to="/login" replace />;
 };
 
 export default PrivateRoute;

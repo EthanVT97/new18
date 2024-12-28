@@ -4,6 +4,13 @@
   "email": "อีเมล",
   "password": "รหัสผ่าน",
   "language": "ภาษา",
+  "dashboard": "แดชบอร์ด",
+  "totalMessages": "ข้อความทั้งหมด",
+  "activeUsers": "ผู้ใช้ที่ใช้งานอยู่",
+  "quickActions": "การดำเนินการด่วน",
+  "startChat": "เริ่มแชท",
+  "viewUsers": "ดูผู้ใช้",
+  "settings": "ตั้งค่า",
   "error": {
     "invalid_credentials": "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
     "network_error": "เกิดข้อผิดพลาดเครือข่าย โปรดลองอีกครั้ง",

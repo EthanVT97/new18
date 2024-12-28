@@ -4,6 +4,13 @@
   "email": "Email",
   "password": "Password",
   "language": "Language",
+  "dashboard": "Dashboard",
+  "totalMessages": "Total Messages",
+  "activeUsers": "Active Users",
+  "quickActions": "Quick Actions",
+  "startChat": "Start Chat",
+  "viewUsers": "View Users",
+  "settings": "Settings",
   "error": {
     "invalid_credentials": "Invalid email or password",
     "network_error": "Network error. Please try again",

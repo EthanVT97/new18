@@ -10,6 +10,7 @@ import Login from './components/auth/Login';
 import AdminDashboard from './components/admin/Dashboard';
 import ChatRoom from './components/chat/ChatRoom';
 import PrivateRoute from './components/auth/PrivateRoute';
+import Dashboard from './components/dashboard/Dashboard';
 
 // Loading component
 const LoadingFallback = () => (
@@ -38,6 +39,14 @@ function App() {
               element={
                 <PrivateRoute>
                   <AdminDashboard />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/login/dashboard"
+              element={
+                <PrivateRoute>
+                  <Dashboard />
                 </PrivateRoute>
               }
             />
