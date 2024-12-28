@@ -15,7 +15,8 @@
     "title": "Chat Room",
     "templates": "Quick Templates",
     "typemessage": "Type a message...",
-    "copy": "Copy Message"
+    "copy": "Copy Message",
+    "online": "is online"
   },
   "templates": {
     "title": "Chat Templates",
