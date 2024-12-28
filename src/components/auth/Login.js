@@ -71,6 +71,7 @@ const Login = () => {
     setError('');
 
     try {
+      // Sign in with Supabase
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
         email: email.trim(),
         password: password,
@@ -85,27 +86,13 @@ const Login = () => {
       }
 
       // Store the session
-      localStorage.setItem('supabase.auth.token', data.session.access_token);
+      if (data.session) {
+        localStorage.setItem('supabase.auth.token', data.session.access_token);
+      }
+
+      // Always navigate to dashboard after successful login
+      navigate('/login/dashboard', { replace: true });
       
-      // Check if admin
-      const { data: userData, error: userError } = await supabase
-        .from('users')
-        .select('is_admin')
-        .eq('id', data.user.id)
-        .single();
-
-      if (userError) {
-        console.error('Error fetching user data:', userError);
-        // Default to regular user if can't fetch admin status
-        navigate('/login/dashboard');
-        return;
-      }
-
-      if (userData?.is_admin) {
-        navigate('/admin');
-      } else {
-        navigate('/login/dashboard');
-      }
     } catch (error) {
       console.error('Error logging in:', error);
       setError(error.message === 'Invalid login credentials'

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   Box,
@@ -9,9 +9,9 @@ import {
   IconButton,
   Card,
   CardContent,
-  CardActions,
   Button,
-  styled
+  styled,
+  CircularProgress
 } from '@mui/material';
 import {
   Message as MessageIcon,
@@ -49,6 +49,25 @@ const StyledCard = styled(Card)(({ theme }) => ({
 const Dashboard = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  const checkUser = async () => {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error) throw error;
+      setUser(user);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      navigate('/login');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleLogout = async () => {
     try {
@@ -58,6 +77,22 @@ const Dashboard = () => {
       console.error('Error logging out:', error.message);
     }
   };
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          minHeight: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          background: 'linear-gradient(135deg, #001F1F 0%, #003333 100%)',
+        }}
+      >
+        <CircularProgress sx={{ color: '#00FF66' }} />
+      </Box>
+    );
+  }
 
   const stats = [
     { title: t('totalMessages'), count: '1,234', icon: <MessageIcon /> },
@@ -74,17 +109,27 @@ const Dashboard = () => {
     >
       <Container>
         <Box sx={{ mb: 4, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography
-            variant="h4"
-            sx={{
-              fontWeight: 700,
-              background: 'linear-gradient(45deg, #00FF66, #33FF99)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            {t('dashboard')}
-          </Typography>
+          <Box>
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 700,
+                background: 'linear-gradient(45deg, #00FF66, #33FF99)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              {t('dashboard')}
+            </Typography>
+            {user && (
+              <Typography
+                variant="subtitle1"
+                sx={{ color: '#00FF66', mt: 1 }}
+              >
+                {user.email}
+              </Typography>
+            )}
+          </Box>
           <Box>
             <IconButton
               sx={{ color: '#00FF66', mr: 1 }}
