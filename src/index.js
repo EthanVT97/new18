@@ -1,16 +1,26 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { BrowserRouter } from 'react-router-dom';
+import { createRoot } from 'react-dom/client';
 import CssBaseline from '@mui/material/CssBaseline';
 import App from './App';
 import './i18n/config';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+// Remove loading spinner once app is loaded
+const removeLoading = () => {
+  const loadingElement = document.querySelector('.loading');
+  if (loadingElement) {
+    loadingElement.style.display = 'none';
+  }
+};
+
+const container = document.getElementById('root');
+const root = createRoot(container);
+
 root.render(
   <React.StrictMode>
     <CssBaseline />
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
+    <App />
   </React.StrictMode>
 );
+
+// Remove loading spinner after render
+removeLoading();
