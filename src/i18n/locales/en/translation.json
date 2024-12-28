@@ -1,0 +1,12 @@
+{
+  "login": "Login",
+  "logging_in": "Logging in...",
+  "email": "Email",
+  "password": "Password",
+  "language": "Language",
+  "error": {
+    "invalid_credentials": "Invalid email or password",
+    "network_error": "Network error. Please try again",
+    "unknown_error": "An unknown error occurred"
+  }
+}

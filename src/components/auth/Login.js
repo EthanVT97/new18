@@ -12,7 +12,9 @@ import {
   MenuItem,
   FormControl,
   InputLabel,
-  styled
+  styled,
+  Alert,
+  Snackbar
 } from '@mui/material';
 import { supabase } from '../../config/supabase';
 
@@ -51,9 +53,11 @@ const Logo = styled('img')({
 const Login = () => {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [language, setLanguage] = useState('en');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleLanguageChange = (event) => {
     const lang = event.target.value;
@@ -63,20 +67,36 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
+    setError('');
+
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: username,
-        password: password,
+      const { data, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
       });
 
-      if (error) throw error;
+      if (signInError) {
+        throw signInError;
+      }
 
-      const { data: userData } = await supabase
+      if (!data?.user) {
+        throw new Error('No user data returned');
+      }
+
+      const { data: userData, error: userError } = await supabase
         .from('users')
         .select('is_admin')
         .eq('id', data.user.id)
         .single();
 
+      if (userError) {
+        throw userError;
+      }
+
+      // Store the session in localStorage
+      localStorage.setItem('supabase.auth.token', data.session.access_token);
+      
       if (userData?.is_admin) {
         navigate('/admin');
       } else {
@@ -84,6 +104,9 @@ const Login = () => {
       }
     } catch (error) {
       console.error('Error logging in:', error.message);
+      setError(error.message || 'Failed to login. Please try again.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -139,9 +162,11 @@ const Login = () => {
               margin="normal"
               required
               fullWidth
-              label={t('username')}
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              label={t('email')}
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
               sx={{
                 mb: 2,
                 '& label': { color: 'primary.light' },
@@ -155,6 +180,7 @@ const Login = () => {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
               sx={{
                 mb: 3,
                 '& label': { color: 'primary.light' },
@@ -164,6 +190,7 @@ const Login = () => {
               type="submit"
               fullWidth
               variant="contained"
+              disabled={loading}
               sx={{
                 py: 1.5,
                 fontSize: '1.1rem',
@@ -174,12 +201,30 @@ const Login = () => {
                   background: 'linear-gradient(45deg, #33FF99 30%, #00FF66 90%)',
                   boxShadow: '0 0 20px rgba(0, 255, 102, 0.5)',
                 },
+                '&:disabled': {
+                  background: 'rgba(0, 255, 102, 0.3)',
+                  color: 'rgba(0, 31, 31, 0.7)',
+                },
               }}
             >
-              {t('login')}
+              {loading ? t('logging_in') : t('login')}
             </Button>
           </Box>
         </GlowingPaper>
+        <Snackbar 
+          open={!!error} 
+          autoHideDuration={6000} 
+          onClose={() => setError('')}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert 
+            onClose={() => setError('')} 
+            severity="error" 
+            sx={{ width: '100%' }}
+          >
+            {error}
+          </Alert>
+        </Snackbar>
       </Container>
     </Box>
   );
